@@ -1,0 +1,126 @@
+#!/usr/bin/perl
+use Mojolicious::Lite;
+
+use JSON;
+use Try::Tiny;
+use Data::Dumper;
+
+use lib '.';
+use BB::Page::RRB;
+
+my $mw_user         = $ENV{BB_MW_USER};
+my $mw_password     = $ENV{BB_MW_PASSWORD};
+my $bbo_user        = $ENV{BB_BBO_USER};
+my $bbo_password    = $ENV{BB_BBO_PASSWORD};
+
+get '/' => sub
+{
+    my $self 	= shift;
+
+	$self->reply->static( 'main.html' );
+};
+
+get '/ext/page' => sub
+{
+	my $self 	= shift;
+
+	my $system	= $self->param('system');
+	my $url		= $self->param('url');
+	my $nr		= $self->param('nr');
+	my $class	= 'BB::Page::' . $system;
+	my $page	= $class->new( 
+		url => $url,
+		ua	=> $self->ua,
+		nr	=> $nr,
+	);
+	my $html	= $page->html;
+	$self->render( text => $html );
+};
+
+post '/getGalleryData' => sub 
+{
+	my $self = shift;
+
+	my $json 	= JSON->new;
+	my $data 	= $json->decode( $self->req->params->pairs->[0] );
+	my $url  	= $data->{url};
+	my $ua 		= $self->ua;
+	
+    #   1.  Some older software has either htm/html urls, but in the end only .html works
+	$url = $url . 'l' if $url =~ /\.htm$/;
+
+	#	2.	BBO login
+	if ( $url =~ /bridgebase.com\/myhands\/hands.php/ ) {
+        my $username = $ENV{BB_BBO_LOGIN}       or die 'ENV variable BB_BBO_LOGIN is empty';
+        my $password = $ENV{BB_BBO_PASSWORD}    or die 'ENV variable BB_BBO_PASSWORD is empty';
+
+		my $log_tx = $ua->get('http://www.bridgebase.com/myhands/myhands_login.php?t=%2Fmyhands%2Findex.php%3F&count=1&submit=Login&keep=on'
+                              . '&username=' . $username
+                              . '&password=' . $password
+                            );
+        
+        # Magic that makes BBO work without javascript, no idea why
+        $url = $url . '&offset=0'  
+	}
+
+	#	3.	Some special treatment for RRBridge
+    my $gallery_name;
+	if ( $url  	=~ /\#\d+$/ ) {
+        my $tx = $ua->get($url);
+        if ( $tx->error ) {
+            die $tx->error;
+        }
+        my $dom			= $tx->res->dom;
+        $gallery_name = $dom->find('title')->first->text;
+
+		$url   	=~ m/\#(.+)$/;
+		my $nr 	= substr( $1, 0, -4 );
+		$url    =~ s/[^\/]+$/h$nr.txt/;
+	}
+
+    #   4.  Load the url data ...
+	my $tx = $ua->get($url);
+	if ( $tx->error ) {
+		die $tx->error;
+	}
+	my $dom			= $tx->res->dom;
+	my $gallery;
+
+    #   5.  ... and try all available parsers.
+	my @parsers	= qw/
+        BB::Parser::TC
+        BB::Parser::JasPary
+        BB::Parser::JasTeam
+        BB::Parser::BBO
+        BB::Parser::BSPary
+        BB::Parser::RRB
+	/;
+	for my $class ( @parsers ) {
+		eval "require $class";
+		my $parser	= $class->new(
+			dom		=> $dom,
+			ua		=> $ua,
+			url		=> $url,
+            gallery_name => $gallery_name,
+		);
+
+		try {
+			$gallery = $parser->get_gallery;
+		}
+		catch {
+			$self->app->log->debug( $_ ) if $_;
+		};
+		
+		last if $gallery;
+	}
+
+	if ( $gallery ) {
+		$self->render( json => $gallery );
+	}
+	else {
+		$self->render( json => { error => 'bad url' } );
+	}
+	
+};
+
+app->start;

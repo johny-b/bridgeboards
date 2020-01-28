@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="referrer" content="origin"/>
+
+    <link rel="icon" href="/images/bb_mini.png">
+	<link rel="image_src" href="/images/bb2.png"/>
+	<meta name="description" content="Narzędzie do analizy rozdań brydżowych. Wygeneruj galerię zawierającą rozegrane rozdania i dyskutuj o nich razem z partnerem lub drużyną.">
+
+
+	<title>Bridge Boards</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-cookies.min.js"></script>
+
+    <!-- angular-translate -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.15.1/angular-translate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.15.1/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.15.1/angular-translate-loader-url/angular-translate-loader-url.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.15.1/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.15.1/angular-translate-storage-local/angular-translate-storage-local.min.js"></script>
+
+	<script src='my_boards.js'></script>
+    <link rel="stylesheet" type="text/css" href="main.css">
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		  ga('create', 'UA-78238683-2', 'auto');
+		  ga('send', 'pageview');
+
+		</script>
+		<!-- Facebook Pixel Code -->
+		<script>
+		!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+		n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+		n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+		t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+		document,'script','https://connect.facebook.net/en_US/fbevents.js');
+		fbq('init', '556606477880503'); // Insert your pixel ID here.
+		fbq('track', 'PageView');
+		</script>
+		<noscript><img height="1" width="1" style="display:none"
+		src="https://www.facebook.com/tr?id=556606477880503&ev=PageView&noscript=1"
+		/></noscript>
+		<!-- DO NOT MODIFY -->
+		<!-- End Facebook Pixel Code -->
+
+</head>
+<body>
+<div id="main-container" ng-app='myBoards' ng-controller='myBoards'>
+    <div id="language">
+        Język / Language:
+        <select name="Language" id="select_language" ng-change="changeLanguage()"
+            ng-options="lang.name for lang in languages track by lang.id"
+            ng-model="language">
+        </select>
+    </div>
+    <div id="logo">
+		<img src="/images/bb.png"></img>
+    </div>
+	<form>
+        <div class="thick" translate="ANALYZE">
+        </div>
+        <div id="inputs">
+            <input type="text" ng-model="url" placeholder="{{'PLACEHOLDER' | translate}}"></input>
+            <input ng-if="!loading" type="submit" ng-click="submit()" value="{{'BUTTON' | translate}}"></input>
+            <span ng-if="loading" translate="LOADING">...</span>
+        </div>
+        <div id="error">
+            <span>{{error}}</span>
+        </div>
+	</form>
+    <div id="howTo">
+        <ol>
+            <li translate="HOWTO.LI1"></li>
+            <li translate="HOWTO.LI2"></li>
+            <li translate="HOWTO.LI3"></li>
+            <li translate="HOWTO.LI4"></li>
+        </ol>
+    </div>
+    <div id="galleries" ng-if="galleries.length > 0">
+        <div class="thick">
+            <span translate="GALLERIES"></span>
+        </div>
+        <div class="gallery" ng-repeat="gallery in galleries | orderBy:'-' track by $index">
+            <a ng-href="{{gallery.url}}" target='_blank'>{{gallery.name}}</a>
+        </div>
+    </div>
+    <div id="examples">
+        <div class="thick" translate="SAMPLES">
+        </div>
+        <div class="gallery">
+            <a ng-href="http://mywebary.com/gallery/d20dd38e760816d44924ce5e394bba03" target='_blank'>EKSTRAKLASA, ROUND 13, SEGMENT 1, TOTOLOTEK</a>
+        </div>
+    </div>
+    <div id="mywebary">
+        <div class="thick">
+            <span translate="MYWEBARY.DESC1"></span>
+             <a href="http://www.mywebary.com">mywebary.com</a> 
+            <span translate="MYWEBARY.DESC2"></span>
+        </div>
+        <ul>
+            <li translate="MYWEBARY.LI1"></li>
+            <li translate="MYWEBARY.LI2"></li>
+            <li translate="MYWEBARY.LI3"></li>
+        </ul>
+    </div>
+    <div id="faq">
+        <div class="thick" translate="FAQ.TITLE">
+        </div>
+        <ol>
+            <li>
+                <b translate="FAQ.Q1"></b>
+                <br>
+                <span translate="FAQ.A1.CONTENT"></span>
+                <ul>
+                    <li><span translate="FAQ.A1.CLUBS"></span> = !c</li>
+                    <li><span translate="FAQ.A1.DIAMONS"></span> = !d</li>
+                    <li><span translate="FAQ.A1.HEARTS"></span> = !h</li>
+                    <li><span translate="FAQ.A1.SPADES"></span> = !s</li>
+                </ul>
+            </li>
+            <li>
+                <b translate="FAQ.Q2"></b>
+                <br>
+                <span translate="FAQ.A2.L1"></span>
+                <br>
+                <span translate="FAQ.A2.L2"></span>
+                <br>
+                <span translate="FAQ.A2.L3"></span>
+            </li>
+            <li>
+                <b translate="FAQ.Q3"></b>
+                <br>
+                <span translate="FAQ.A3.PART1"></span> <a href="http://www.mywebary.com">mywebary.com</a> <span translate="FAQ.A3.PART2"></span>
+            </li>
+            <li>
+                <b translate="FAQ.Q4"></b>
+                <br>
+                <span translate="FAQ.A4.L1"></span>
+                <br>
+                <span translate="FAQ.A4.L2"></span> <a href="mailto:{{'EMAIL' | translate }}" translate="EMAIL"></a>.
+            </li>
+            <li>
+                <b translate="FAQ.Q5"></b>
+                <br>
+                <span translate="FAQ.A5.L1"></span>
+                <br>
+                <span translate="FAQ.A5.L2.PART1"></span> <a href="http://www.mywebary.com">mywebary.com</a> <span translate="FAQ.A5.L2.PART2"></span>
+            </li>
+            <li>
+                <b translate="FAQ.Q6"></b>
+                <br>
+                <span translate="FAQ.A6.L1"></span>
+                <br>
+                <span translate="FAQ.A6.L2"></span>
+                <br>
+                <span translate="FAQ.A6.L3"></span>
+            </li>
+            <li>
+                <b translate="FAQ.Q7"></b>
+                <br>
+                <span translate="FAQ.A7.L1"></span>
+                <a href="mailto:{{'EMAIL' | translate }}" translate="EMAIL"></a> 
+                <br>
+                <span translate="FAQ.A7.L2"></span> 
+                <a href="https://www.facebook.com/BridgeBoards-191182841364377/" target='_blank' translate="FAQ.A7.FACEBOOK"></a>.
+            </li>
+        </ol>
+    </div>
+</div>
+</body>
+</html>

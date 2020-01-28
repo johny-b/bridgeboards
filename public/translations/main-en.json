@@ -1,0 +1,69 @@
+{
+    "ANALYZE" : "Use BridgeBoards to analyze played boards:",
+    "LOADING" : "LOADING",
+    "PLACEHOLDER" : "link to personal scorecard",
+    "BUTTON": "LOAD",
+	"EMAIL": "support@bridgeboards.com",
+    "HOWTO" : {
+        "LI1" : "Paste link to the pairs tournament personal scorecard or match results and press button 'LOAD'.",
+        "LI2" : "Gallery with your results will be generated.",
+        "LI3" : "Send the generated link to your partner or team partners.",
+        "LI4" : "Everyone who receives the link to your gallery may add comments to the boards."
+    },
+    "GALLERIES": "Created galleries:",
+    "SAMPLES": "Sample galleries (option to comment has been blocked)",
+    "MYWEBARY": {
+        "DESC1": "Create an account on",
+        "DESC2": " and take advantage of many additional options such as:",
+        "LI1": "Receive notifications about new comments to your galleries.",
+        "LI2": "Easy access to the history of all your galleries created on BridgeBoards.com pinned to your account.",
+        "LI3": "Only registered users can delete their comments."
+    },
+    "FAQ" : {
+        "TITLE": "FAQ:",
+        "Q1": "How to add colours of cards to the comments?",
+        "A1": {
+            "CONTENT": "Add ! and the first letter of the name of the bidden colour.",
+            "CLUBS": "clubs",
+            "DIAMONS": "diamonds",
+            "HEARTS": "hearts",
+            "SPADES": "spades"
+        },
+        "Q2": "How to add bidding to the comments?",
+        "A2": {
+            "L1": "In the upper part of the comment panel there is a button 'add bidding'.",
+            "L2": "This button is visible for all galleries created with BridgeBoards.com.",
+            "L3": "After pressing this button special bidding table and buttons appear."
+        },
+        "Q3": "Can I use BridgeBoards.com to access all the galleries I have created?",
+        "A3": {
+            "PART1": "No, an account on ",
+            "PART2": "should be created and all galleries from BridgeBoards should be pinned to your account."
+        },
+        "Q4": "Is it possible to generate galleries from all types of tournaments?",
+        "A4": {
+            "L1": "BridgeBoards can currently read: BBO and all types of tournaments and league games that take place in Poland.",
+            "L2": "Should you have any problems, please contact us"
+        },
+        "Q5": "Why I don't receive notifications about new comments to my galleries?",
+        "A5": {
+            "L1": "Only registered users can receive notifications.",
+            "L2": {
+                "PART1": "Create an account on ",
+                "PART2": "and sign in."
+            }
+        },
+        "Q6": "How to delete comments?",
+        "A6": {
+            "L1": "Only your own comments can be deleted.",
+            "L2": "Additionally only the comments added by logged users can be deleted - you can't delete comment you create as 'anonymous'.",
+            "L3": "After placing cursor on the comment a button 'X' on the right appears - press this button to delete the comment."
+        },
+        "Q7": "How can I get in touch with you?",
+        "A7": {
+            "L1": "Should you have any questions please contact us",
+            "L2": "We are also present on",
+            "FACEBOOK": "Facebook"
+        }
+    }
+}

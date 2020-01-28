@@ -1,0 +1,70 @@
+{
+    "ANALYZE" : "Analizuj rozdania z BridgeBoards:",
+    "LOADING" : "WCZYTYWANIE",
+    "PLACEHOLDER" : "link do historii",
+    "BUTTON": "WCZYTAJ",
+	"EMAIL": "support@bridgeboards.com",
+    "HOWTO" : {
+        "LI1" : "Wklej link do historii z turnieju lub kontrolki meczowej i kliknij WCZYTAJ;",
+        "LI2" : "System wygeneruje dla Ciebie galerię z rozegranymi rozdaniami;",
+        "LI3" : "Roześlij adres galerii osobom z którymi chciałbyś analizować rozdania;",
+        "LI4" : "Każdy kto otrzyma link będzie mógł dodawać swoje komentarze."
+    },
+    "GALLERIES": "Stworzone galerie:",
+    "SAMPLES": "Przykładowe galerie (komentowanie zostało zablokowane):",
+    "MYWEBARY": {
+        "DESC1": "Po stworzeniu konta na ",
+        "DESC2": " otrzymasz dodatkowe możliwości tj.:",
+        "LI1": "Będziesz dostawał informację o nowych komentarzach;",
+        "LI2": "Będziesz miał łatwy dostęp do wszystkich swoich galerii stworzonych na BridgeBoards.com które przypniesz do swojego konta;",
+        "LI3": "Tylko zalogowani użytkownicy mogą kasować swoje komentarze."
+    },
+    "FAQ" : {
+        "TITLE": "FAQ:",
+        "Q1": "Jak dodawać znaczki kolorów w komentarzach?",
+        "A1": {
+            "CONTENT": "W polu komentarza należy wpisać literę oznaczającą dany symbol poprzedzoną wykrzyknikiem. Czyli odpowiednio dla:",
+            "CLUBS": "trefli",
+            "DIAMONS": "kar",
+            "HEARTS": "kierów",
+            "SPADES": "pików"
+        },
+        "Q2": "Jak dodać licytację?",
+        "A2": {
+            "L1": "W górnej części panelu komentarzy znajduje się przycisk add bidding.",
+            "L2": "Pojawia się on dla wszystkich galerii stwrzonych przy użyciu bridgeboards.com.",
+            "L3": "Po jego kliknięciu wyświetla się grupa przycisków umożliwających dodawanie licytacji."
+        },
+        "Q3": "Czy utworzone przeze mnie galerie będą zawsze widoczne po wejściu na bridgeboards.com?",
+        "A3": {
+            "PART1": "Nie, w tym celu lepiej założyć konto na",
+            "PART2": "i przypiąć do niego galerię."
+        },
+        "Q4": "Czy mogę wygenerować galerię ze wszystkich typów turniejów?",
+        "A4": {
+            "L1": "BridgeBoards obsługuje obecnie: BBO raz wszystkie znane nam typy turniejów i rozgrywek ligowych na terenie Polski.",
+            "L2": "W razie jakichkolwiek problemów prosimy o kontakt na"
+        },
+        "Q5": "Czemu nie wyświetlają mi się powiadomienia o nowych komentarzach?",
+        "A5": {
+            "L1": "Informacja o nowych komentarzach jest wyświetlana tylko zalogowanym użytkownikom.",
+            "L2": {
+                "PART1": "Stwórz konto na ",
+                "PART2": "i zaloguj się."
+            }
+        },
+        "Q6": "Jak usunąć komentarz?",
+        "A6": {
+            "L1": "Usuwać można tylko i wyłącznie swoje komentarze.",
+            "L2": "Dodatkowo komentarz musi być dodany przez zalogowanego użytkownika.",
+            "L3": "Aby usunąć komentarz należy najechać na niego myszką i wcisnąć przycisk X, który zostanie wyświetlony."
+        },
+        "Q7": "W jaki sposób mogę się skontaktować z autorami strony?",
+        "A7": {
+            "L1": "W razie jakichkolwiek problemów prosimy o kontakt na",
+            "L2": "Zachęcamy również do odwiedzenia naszego profilu na",
+            "FACEBOOK": "Facebooku"
+        }
+    }
+
+}
