@@ -89,6 +89,7 @@ post '/getGalleryData' => sub
     #   5.  ... and try all available parsers.
 	my @parsers	= qw/
         BB::Parser::TC
+        BB::Parser::TCTeam
         BB::Parser::JasPary
         BB::Parser::JasTeam
         BB::Parser::BBO
