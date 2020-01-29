@@ -28,7 +28,7 @@ for my $name (qw/nr ns ew c_height c_suit x declarer l_height l_suit result scor
 sub caption_score 
 {
     my $self    = shift;
-	my $score   = $self->score;
+	my $score   = $self->_with_sign($self->ns_points);
 	$score      =~ s/^-$/&mdash;/;
     return $score;
 }
@@ -92,5 +92,31 @@ sub _as_html
 	return $suit;
 }
 
+sub signed_ns_points
+{
+    my $self = shift;
+    return $self->_with_sign($self->ns_points);
+}
+
+sub signed_ew_points
+{
+    my $self = shift;
+    return $self->_with_sign($self->ew_points);
+}
+
+sub _with_sign
+{
+    my $self    = shift;
+    my $val     = shift;
+    if ($val > 0) {
+        return '+' . $val;
+    }
+    elsif ($val < 0) {
+        return "$val";
+    }
+    else {
+        return $val;
+    }
+}
 
 1;

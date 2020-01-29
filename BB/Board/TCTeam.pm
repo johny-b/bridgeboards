@@ -26,7 +26,7 @@ around BUILDARGS => sub {
     }
     
     if ($data->{ScorePresent}) {
-        my $score     = $board_result_2->{Score};
+        $score     = $board_result_2->{Score};
     }
     my $ns_points = $board_result_1->{NsResult};
     my $ew_points = $board_result_1->{EwResult};

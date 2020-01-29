@@ -16,6 +16,12 @@ has _raw_data => (
     lazy    => 1,
 );
 
+has _base_url => (
+    is      => 'ro',
+    builder => '_build_base_url',
+    lazy    => 1,
+);
+
 sub _get_pages
 {
 	my $self 	= shift;
@@ -72,7 +78,7 @@ sub _board_name
     my ($self, $ob, $cb) = @_;
     return 'Board ' . $ob->nr  . ' ' . $ob->contract . ' ' . $ob->result . ' | ' . 
 							           $cb->contract . ' ' . $cb->result . ' | ' . 
-            $ob->ns_points;
+            $ob->signed_ns_points;
 }
 
 sub _first_comment 
@@ -105,9 +111,7 @@ sub _board_url
     my $self = shift;
     my $nr   = shift;
 
-    my @url_parts = split '/', $self->url;
-    my $base_url = join '/', @url_parts[0 .. @url_parts - 2];
-    my $board_url = join '', $base_url, '/p', $nr, '.html';
+    my $board_url = join '', $self->_base_url, 'p', $nr, '.html';
 
     return $board_url;
 }
@@ -115,7 +119,17 @@ sub _board_url
 sub _get_gallery_name
 {
 	my $self 	= shift;
-    return 'AAAAA';
+
+    #   Settings data
+    my $settings_data_url = join '', $self->_base_url, 'settings.json';
+    my $settings_data = $self->ua->get( $settings_data_url )->res->body;
+    
+    #   Sometimes there is BOM
+    use File::BOM qw( decode_from_bom );
+    my $u = decode_from_bom($settings_data);
+    my $name = from_json($u)->{FullName} || '[TOURNAMENT NAME MISSING]';
+
+	return $name;
 }
 
 sub _build_raw_data 
@@ -129,6 +143,13 @@ sub _build_raw_data
 
     my $data = decode_json($self->ua->get( $data_url )->res->body);
     return $data;
+}
+
+sub _build_base_url
+{
+    my $self = shift;
+    my @url_parts = split '/', $self->url;
+    return join '/', @url_parts[0 .. @url_parts - 2], '';
 }
 
 1;
