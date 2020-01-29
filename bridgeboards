@@ -95,9 +95,6 @@ post '/getGalleryData' => sub
         BB::Parser::BSPary
         BB::Parser::RRB
 	/;
-	my @parsers	= qw/
-        BB::Parser::TCTeam
-	/;
 	for my $class ( @parsers ) {
 		eval "require $class";
 		my $parser	= $class->new(
