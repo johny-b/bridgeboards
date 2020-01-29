@@ -22,7 +22,7 @@ use Moose;
 #   );
 
 for my $name (qw/nr ns ew c_height c_suit x declarer l_height l_suit result score ns_points ew_points/) { 
-    has $name => ( is => 'ro', required => 1);
+    has $name => ( is => 'rw', required => 1);
 }
 
 sub caption_score 

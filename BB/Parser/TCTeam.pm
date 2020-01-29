@@ -23,6 +23,12 @@ sub _get_pages
 
 	my $pages	= [];
     my $scores  = $self->_raw_data->{'Scores'};
+
+    my $open_ns = $self->_pair($self->_raw_data->{'OpenNs'});
+    my $open_ew = $self->_pair($self->_raw_data->{'OpenEw'});
+    my $closed_ns = $self->_pair($self->_raw_data->{'ClosedNs'});
+    my $closed_ew = $self->_pair($self->_raw_data->{'ClosedEw'});
+
     for my $score (@$scores) {
         my $nr  = $score->{'Board'};
         my $url = $self->_board_url($nr);
@@ -30,36 +36,68 @@ sub _get_pages
         my $ob = BB::Board::TCTeamNS->new($score);
         my $cb = BB::Board::TCTeamEW->new($score);
 
-		my $comment	= ''
-					. '<table>'
-					. '<tr><th></th><th>Open</th><th>Closed</th>'
-					. "<tr><th>NS&nbsp;</th><td>" . $ob->ns . "&nbsp;&nbsp;</td><td>" . $cb->ns . "</td></tr>"
-					. "<tr><th>EW&nbsp;</th><td>" . $ob->ew . "&nbsp;&nbsp;</td><td>" . $cb->ew . "</td></tr>"
-					. '</table>'
-					
-					. "<br><div><b>" . $ob->caption . "</b></div>"
-					
-					. '<table>' 
-					. "<tr><th>O&nbsp;</th>" . $ob->html_summary . "</tr>"
-					. "<tr><th>C&nbsp;</th>" . $cb->html_summary . "</tr>"
-					. '</table>'
-					;
+        $ob->ns($open_ns);
+        $ob->ew($open_ew);
+        $cb->ns($closed_ns);
+        $cb->ew($closed_ew);
 
 		my $page = {
 			address 	=> $url,
-			name		=> 	'Board ' . $nr  . ' ' . $ob->contract . ' ' . $ob->result . ' | ' . 
-							                        $cb->contract . ' ' . $cb->result . ' | ' . $ob->ns_points,
+			name		=> $self->_board_name($ob, $cb),	
 			comments 	=> [
-				{
-					author 	=> 'BridgeBoards.com',
-					comment => $comment,
-				}
-			],
+                $self->_first_comment($ob, $cb),
+            ],
 		};
 		push @$pages, $page;
     }
 	
     return $pages;
+}
+
+sub _pair
+{   
+    my ($self, $data) = @_;
+    my @names;
+    for my $key ('_person1', '_person2') {
+        my $first_name = $data->{$key}->{_firstName};
+        my $last_name = $data->{$key}->{_lastName};
+        push @names, $first_name . ' ' . $last_name;
+    }
+
+    return join '<br>', @names;
+}
+
+sub _board_name
+{
+    my ($self, $ob, $cb) = @_;
+    return 'Board ' . $ob->nr  . ' ' . $ob->contract . ' ' . $ob->result . ' | ' . 
+							           $cb->contract . ' ' . $cb->result . ' | ' . 
+            $ob->ns_points;
+}
+
+sub _first_comment 
+{
+    my ($self, $ob, $cb) = @_;
+	
+    my $comment	= ''
+				. '<table>'
+				. '<tr><th></th><th>Open</th><th>Closed</th>'
+				. "<tr><th>NS&nbsp;</th><td>" . $ob->ns . "&nbsp;&nbsp;</td><td>" . $cb->ns . "</td></tr>"
+				. "<tr><th>EW&nbsp;</th><td>" . $ob->ew . "&nbsp;&nbsp;</td><td>" . $cb->ew . "</td></tr>"
+				. '</table>'
+				
+				. "<br><div><b>" . $ob->caption . "</b></div>"
+				
+				. '<table>' 
+				. "<tr><th>O&nbsp;</th>" . $ob->html_summary . "</tr>"
+				. "<tr><th>C&nbsp;</th>" . $cb->html_summary . "</tr>"
+				. '</table>'
+				;
+
+    return {
+	    author 	=> 'BridgeBoards.com',
+		comment => $comment,
+	}
 }
 
 sub _board_url

@@ -10,7 +10,7 @@ around BUILDARGS => sub {
     my $class = shift;
     my $data  = shift;
     
-    (my $c_height, my $c_suit, my $l_height, my $l_suit, my $declarer, my $result, my $x, my $score) = ('', '', '', '', '', '', '', '');
+    my ($c_height, $c_suit, $l_height, $l_suit, $declarer, $result, $x, $score) = ('', '', '', '', '', '', '', '');
 
     my $board_result_1 = $data->{$class->res_name()};
     my $board_result_2 = $board_result_1->{NsScore};
