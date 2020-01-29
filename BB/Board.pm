@@ -6,19 +6,22 @@ use Moose;
 #   provides convinient accessors.
 #
 #   my $board = BB::Board->new(
-#       nr => 7,
-#       ns => 'FOO - BAR',
-#       ew => 'BAZ - BAZ',
-#       c_height => 3,
-#       c_suit => 'H',      # NT/S/H/D/C/''
-#       declarer => 'W',
-#       l_height => 'A',
-#       l_suit => 'D',
-#       result => '-1',
-#       score => -100,
+#       nr          => 7,
+#       ns          => 'FOO - BAR',
+#       ew          => 'BAZ - BAZ',
+#       c_height    => 3,
+#       c_suit      => 'H',      # 'NT'/'S'/'H'/'D'/'C'/''
+#       x           => '',     # ''/'x'/'xx'
+#       declarer    => 'W',
+#       l_height    => 'A',
+#       l_suit      => 'D',
+#       result      => '-1',
+#       score       => -100,
+#       ns_points   => '36%',
+#       ew_points   => '64%',
 #   );
 
-for my $name (qw/nr ns ew c_height c_suit declarer l_height l_suit result score/) { 
+for my $name (qw/nr ns ew c_height c_suit x declarer l_height l_suit result score ns_points ew_points/) { 
     has $name => ( is => 'ro', required => 1);
 }
 
@@ -54,7 +57,7 @@ sub html_contract
 {
     my $self = shift;
     my $suit = $self->_as_html($self->c_suit);
-    return $self->c_height . $suit;
+    return $self->c_height . $suit . $self->x;
 }
 
 sub html_lead
@@ -67,7 +70,7 @@ sub html_lead
 sub contract
 {
     my $self = shift;
-    return $self->c_height . $self->c_suit;
+    return $self->c_height . $self->c_suit . $self->x;
 }
 
 sub lead

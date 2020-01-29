@@ -3,7 +3,8 @@ use Moose;
 use JSON;
 
 use lib '.';
-use BB::Board;
+use BB::Board::TCTeamNS;
+use BB::Board::TCTeamEW;
 
 extends 'BB::Parser';
 
@@ -14,32 +15,6 @@ has _raw_data => (
     builder => '_build_raw_data',
     lazy    => 1,
 );
-
-my $fake_data = {
-    nr => 7,
-    ns => 'JANEK - JANEK',
-    ew => 'ANIA - ANIA',
-    c_height => 3,
-    c_suit => 'H',
-    declarer => 'W',
-    l_height => 'A',
-    l_suit => 'D',
-    result => '-1',
-    score => '-100',
-};
-
-my $fake_data_2 = {
-    nr => 7,
-    ns => 'XXX - AAA',
-    ew => 'YYY - ZZZ',
-    c_height => 2,
-    c_suit => 'D',
-    declarer => 'E',
-    l_height => 'K',
-    l_suit => 'S',
-    result => '-5',
-    score => '-250',
-};
 
 sub _get_pages
 {
@@ -52,8 +27,8 @@ sub _get_pages
         my $nr  = $score->{'Board'};
         my $url = $self->_board_url($nr);
 
-        my $ob = BB::Board->new($fake_data);
-        my $cb = BB::Board->new($fake_data_2);
+        my $ob = BB::Board::TCTeamNS->new($score);
+        my $cb = BB::Board::TCTeamEW->new($score);
 
 		my $comment	= ''
 					. '<table>'
@@ -73,7 +48,7 @@ sub _get_pages
 		my $page = {
 			address 	=> $url,
 			name		=> 	'Board ' . $nr  . ' ' . $ob->contract . ' ' . $ob->result . ' | ' . 
-							                        $cb->contract . ' ' . $cb->result . ' | ' . $ob->score,
+							                        $cb->contract . ' ' . $cb->result . ' | ' . $ob->ns_points,
 			comments 	=> [
 				{
 					author 	=> 'BridgeBoards.com',
